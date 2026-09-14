@@ -43,16 +43,20 @@ namespace IndianDeliverySimulator.Interaction
             if (manager == null || manager.CurrentOrder == null)
                 return;
 
-            if (manager.CurrentOrder.State == DeliveryState.GoingToStore)
+            switch (manager.CurrentOrder.State)
             {
-                manager.CurrentOrder.State = DeliveryState.AtStore;
-                Debug.Log("Reached store. Press E again to pick up the package.");
-            }
-            else if (manager.CurrentOrder.State == DeliveryState.AtStore)
-            {
-                manager.ConfirmPickup();
-                manager.CurrentOrder.State = DeliveryState.GoingToCustomer;
-                Debug.Log("Package picked up. Deliver it to the customer.");
+                case DeliveryState.GoingToStore:
+                    manager.ArriveAtStore();
+                    Debug.Log("Reached store. Press E again to pick up the package.");
+                    break;
+
+                case DeliveryState.AtStore:
+                    if (manager.ConfirmPickup())
+                    {
+                        manager.StartCustomerTrip();
+                        Debug.Log("Package picked up. Deliver it to the customer.");
+                    }
+                    break;
             }
         }
     }
