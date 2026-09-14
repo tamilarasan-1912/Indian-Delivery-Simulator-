@@ -31,7 +31,14 @@ namespace IndianDeliverySimulator.Interaction
 
             var pickup = hit.collider.GetComponentInParent<PickupPoint>();
             if (pickup != null)
+            {
                 pickup.Interact();
+                return;
+            }
+
+            var customer = hit.collider.GetComponentInParent<CustomerDeliveryPoint>();
+            if (customer != null)
+                customer.Interact();
         }
     }
 
