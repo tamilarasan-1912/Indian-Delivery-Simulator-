@@ -5,8 +5,6 @@ namespace IndianDeliverySimulator.Interaction
 {
     public class CustomerDeliveryPoint : MonoBehaviour
     {
-        [SerializeField] private int testOtp = 4837;
-
         public void Interact()
         {
             var manager = DeliveryManager.Instance;
@@ -21,10 +19,9 @@ namespace IndianDeliverySimulator.Interaction
                     break;
 
                 case DeliveryState.AwaitingOtp:
-                    if (manager.VerifyOtp(testOtp))
+                    // Temporary vertical-slice shortcut. A later phone UI will accept the OTP explicitly.
+                    if (manager.VerifyOtp(manager.CurrentOrder.Otp))
                         Debug.Log("OTP verified. Collect COD if required, then hand over the package.");
-                    else
-                        Debug.LogWarning("Incorrect OTP.");
                     break;
 
                 case DeliveryState.AwaitingCash:
