@@ -49,7 +49,27 @@ namespace IndianDeliverySimulator.Core
             if (CurrentOrder == null || CurrentOrder.State != DeliveryState.Waiting)
                 return false;
 
+            CurrentOrder.State = DeliveryState.Accepted;
+            OrderChanged?.Invoke(CurrentOrder);
+            return true;
+        }
+
+        public bool StartStoreTrip()
+        {
+            if (CurrentOrder == null || CurrentOrder.State != DeliveryState.Accepted)
+                return false;
+
             CurrentOrder.State = DeliveryState.GoingToStore;
+            OrderChanged?.Invoke(CurrentOrder);
+            return true;
+        }
+
+        public bool ArriveAtStore()
+        {
+            if (CurrentOrder == null || CurrentOrder.State != DeliveryState.GoingToStore)
+                return false;
+
+            CurrentOrder.State = DeliveryState.AtStore;
             OrderChanged?.Invoke(CurrentOrder);
             return true;
         }
@@ -60,6 +80,16 @@ namespace IndianDeliverySimulator.Core
                 return false;
 
             CurrentOrder.State = DeliveryState.PickedUp;
+            OrderChanged?.Invoke(CurrentOrder);
+            return true;
+        }
+
+        public bool StartCustomerTrip()
+        {
+            if (CurrentOrder == null || CurrentOrder.State != DeliveryState.PickedUp)
+                return false;
+
+            CurrentOrder.State = DeliveryState.GoingToCustomer;
             OrderChanged?.Invoke(CurrentOrder);
             return true;
         }
